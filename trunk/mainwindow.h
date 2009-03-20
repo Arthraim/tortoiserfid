@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QtGui/QMainWindow>
+#include "RFIDfunction.h"
 
 namespace Ui
 {
@@ -18,6 +19,13 @@ public:
 
 private:
     Ui::MainWindowClass *ui;
+    RFIDfunction _RFIDfunction;
+
+private slots:
+    void on_btn_CutMoney_clicked();
+    void on_btn_AddMoney_clicked();
+    void on_btn_GetMoney_clicked();
+    void on_btn_Initialize_clicked();
 };
 
 #endif // MAINWINDOW_H
