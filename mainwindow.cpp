@@ -30,6 +30,8 @@ void MainWindow::on_btn_GetMoney_clicked()
     int money = _RFIDfunction.getMoney(code);
     if(money = -1)
         ui->lineEdit_GetMoney->setText("Check Account fail!");
+    else
+        ui->lineEdit_GetMoney->setText("Fuck you");
 }
 
 void MainWindow::on_btn_AddMoney_clicked()
