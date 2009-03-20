@@ -57,4 +57,4 @@ private:
 };
 
 
-#endif // RFIDFUNCTION_H
+#endif  //RFIDFUNCTION_H
