@@ -1,8 +1,9 @@
 #include "RFIDfunction.h"
 
 // 检查是否初始化成功
-bool RFIDfunction::isInitPurse(uchar *buff)
+bool RFIDfunction::isInitPurse()
 {
+    uchar *buff;
     Recieve(buff);
     if(buff[2] == 0x02 && buff[3] == 0xdc)
         return false;
@@ -13,12 +14,14 @@ bool RFIDfunction::isInitPurse(uchar *buff)
 }
 
 // 检查是否获得余额成功（成功，buff为金额值）
-bool RFIDfunction::isGetMoney(uchar *buff)
+int RFIDfunction::isGetMoney()
 {
+    int _money; // 返回的钱数量
+    uchar *buff;
     Recieve(buff);
     uchar money[4];
     if(buff[2] == 0x02 && buff[3] == 0xdb)
-        return false;
+        return -1; // －1表示失败
     else if(buff[2] == 0x06 && buff[3] == 0x24)
     {
         money[0] = buff[4];
@@ -26,13 +29,14 @@ bool RFIDfunction::isGetMoney(uchar *buff)
         money[2] = buff[6];
         money[3] = buff[7];
     }
-    *buff = *money;
-    return true;
+    //把money转为int并且返回！！！！
+    return _money;
 }
 
 // 检查是否充钱成功
-bool RFIDfunction::isAddMoney(uchar *buff)
+bool RFIDfunction::isAddMoney()
 {
+    uchar *buff;
     Recieve(buff);
     if(buff[2] == 0x02 && buff[3] == 0xda)
         return false;
@@ -43,8 +47,9 @@ bool RFIDfunction::isAddMoney(uchar *buff)
 }
 
 // 检查是否扣钱成功
-bool RFIDfunction::isCutMoney(uchar *buff)
+bool RFIDfunction::isCutMoney()
 {
+    uchar *buff;
     Recieve(buff);
     if(buff[2] == 0x02 && buff[3] == 0xd9)
         return false;
@@ -155,17 +160,16 @@ bool RFIDfunction::cutMoney(uchar *code, uchar *money)
 }
 
 // 发送前加上AA
-// 此方法需要去掉第一组AABB的处理！！！！
 void RFIDfunction::SendCheck_AA(unsigned char *SendBuf)
  {
 	 unsigned char i;
 	 unsigned char  buffer[1000];
-	 for(i=0;i<SendBuf[0];i++)
+         for(i=1;i<SendBuf[0];i++) // i=0则为包括AABB的AA
 	 {
-		 if(SendBuf[i]==0xAA)            //changed  for  test
+                 if(SendBuf[i]==0xAA)
 		 {
 			 memcpy(buffer,&SendBuf[i+1],SendBuf[0]-i);
-			 SendBuf[i+1]=0x00;                      //changed  for  test
+                         SendBuf[i+1]=0x00;
 			 memcpy(&SendBuf[i+2],buffer,SendBuf[0]-i);
 		 }
 	 }
@@ -192,9 +196,9 @@ void RFIDfunction::RecieveCheck_AA(unsigned char *RecieveBuf)
 std::string RFIDfunction::hex2char( int len, char*income )
 {
     static const char hexval[16] = { '0', '1', '2', '3',
-                     '4', '5', '6', '7',
-                     '8', '9', 'a', 'b',
-                     'c', 'd', 'e', 'f' };
+                                     '4', '5', '6', '7',
+                                     '8', '9', 'a', 'b',
+                                     'c', 'd', 'e', 'f' };
     unsigned max_cols = 16;
     std::ostringstream buf;
 
@@ -218,11 +222,13 @@ void RFIDfunction::Send(uchar*msg)
 {
     SendCheck_AA(msg);
     //串口通信的发送代码！！！
+    //发送msg
 }
 
 // 串口接受
 void RFIDfunction::Recieve(uchar*msg)
-{
+{        
+    //串口通信的接受代码！！！
+    //得到的记作msg
     RecieveCheck_AA(msg);
-    // 串口通信的接受代码！！！
 }

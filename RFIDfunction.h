@@ -13,16 +13,16 @@ class RFIDfunction
 public:
 
     // 检查是否初始化成功
-    bool isInitPurse(uchar *buff);
+    bool isInitPurse();
 
     // 检查是否获得余额成功（成功，buff为金额值）
-    bool isGetMoney(uchar *buff);
+    int isGetMoney();
 
     // 检查是否充钱成功
-    bool isAddMoney(uchar *buff);
+    bool isAddMoney();
 
     // 检查是否扣钱成功
-    bool isCutMoney(uchar *buff);
+    bool isCutMoney();
 
     // 初始化钱包
     bool initPurse(uchar *code, uchar *money);
