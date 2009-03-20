@@ -104,7 +104,7 @@
      <string>Cut Money</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="lineEdit_GetMoney">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -119,7 +119,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="lineEdit_AddMoney">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -134,7 +134,7 @@
      </font>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="lineEdit_CutMoney">
     <property name="geometry">
      <rect>
       <x>10</x>

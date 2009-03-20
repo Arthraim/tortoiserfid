@@ -15,11 +15,21 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btn_Initialize_clicked()
 {
+    uchar code[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+    uchar money[4] = {0x00,0x00,0x00,0x01};
+    _RFIDfunction.initPurse(code, money);
+    if(_RFIDfunction.isInitPurse() == true)
+        printf("initPurse OK!\n");
+    else
+        printf("initPurse failed!\n");
 }
 
 void MainWindow::on_btn_GetMoney_clicked()
 {
-
+    uchar code[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+    int money = _RFIDfunction.getMoney(code);
+    if(money = -1)
+        ui->lineEdit_GetMoney->setText("Check Account fail!");
 }
 
 void MainWindow::on_btn_AddMoney_clicked()
