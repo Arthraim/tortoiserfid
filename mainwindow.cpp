@@ -28,10 +28,10 @@ void MainWindow::on_btn_GetMoney_clicked()
 {
     uchar code[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
     int money = _RFIDfunction.getMoney(code);
-    if(money = -1)
+    if(money == -1)
         ui->lineEdit_GetMoney->setText("Check Account fail!");
     else
-        ui->lineEdit_GetMoney->setText("Fuck you");
+        ui->lineEdit_GetMoney->setText(QString::number(money));
 }
 
 void MainWindow::on_btn_AddMoney_clicked()
