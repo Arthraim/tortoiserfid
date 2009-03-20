@@ -31,17 +31,24 @@ void MainWindow::on_btn_Initialize_clicked()
 
 void MainWindow::on_btn_GetMoney_clicked()
 {
+    // 1、发送getMoney的请求
     uchar code[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
-    int money = _RFIDfunction.getMoney(code);
-    if(money == -1) // -1为RFIDfunction::getMoney错误时返回的代码
+    if(_RFIDfunction.getMoney(code) == true)
+        printf("RFIDfunction::getMoney OK! (Sending get money ask succeeded!)\n");
+    else
+        printf("RFIDfunction::getMoney failed! (Sending get money ask failed!)\n");
+
+    // 2、检查是否得到money
+    int money = _RFIDfunction.isGetMoney();
+    if(money == -1) // -1为RFIDfunction::isGetMoney错误时返回的代码
     {
         ui->lineEdit_GetMoney->setText("Check Account fail!");
-        printf("RFIDfunction::getMoney failed!\n");
+        printf("RFIDfunction::isGetMoney failed!\n");
     }
     else
     {
         ui->lineEdit_GetMoney->setText(QString::number(money));
-        printf("RFIDfunction::getMoney OK!\n");
+        printf("RFIDfunction::isGetMoney OK!\n");
         printf("The money is [%d].\n", money);
     }
     printf("\n");
@@ -60,7 +67,7 @@ void MainWindow::on_btn_AddMoney_clicked()
     else
     {
         printf("Get int from lineEdit_AddMoney failed!\n");
-        ui->lineEdit_GetMoney->setText("Get int from lineEdit_AddMoney failed!");
+        ui->lineEdit_AddMoney->setText("Get int from lineEdit_AddMoney failed!");
         return; // 失败就直接返回
     }
 
@@ -97,7 +104,7 @@ void MainWindow::on_btn_CutMoney_clicked()
     else
     {
         printf("Get int from lineEdit_CutMoney failed!\n");
-        ui->lineEdit_GetMoney->setText("Get int from lineEdit_CutMoney failed!");
+        ui->lineEdit_CutMoney->setText("Get int from lineEdit_CutMoney failed!");
         return; // 失败就直接返回
     }
 
