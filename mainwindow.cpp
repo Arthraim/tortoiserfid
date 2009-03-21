@@ -15,17 +15,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_btn_Initialize_clicked()
 {
+    // 1、发送初始化钱包的请求
     uchar code[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
-    uchar money[4] = {0x00,0x00,0x00,0x01};
-    _RFIDfunction.initPurse(code, money);
-    if(_RFIDfunction.isInitPurse() == true)
-    {
-        printf("RFIDfunction::initPurse OK!\n");
-    }
+    uchar money[4] = {0x00,0x00,0x00,0x01}; // 初始化为1元
+    if(_RFIDfunction.initPurse(code, money))
+        printf("RFIDfunction::initPurse OK! (Sending initialize purse ask succeeded!)\n");
     else
-    {
-        printf("RFIDfunction::initPurse failed!\n");
-    }
+        printf("RFIDfunction::initPurse failed! (Sending initialize purse ask failed!)\n");
+
+    // 2、检查是否初始化成功
+    if(_RFIDfunction.isInitPurse() == true)
+        printf("RFIDfunction::isInitPurse OK! (Initialize Purse succeeded!)\n");
+    else
+        printf("RFIDfunction::isInitPurse failed! (Initialize Purse failed!)\n");
     printf("\n");
 }
 
@@ -67,7 +69,7 @@ void MainWindow::on_btn_AddMoney_clicked()
     else
     {
         printf("Get int from lineEdit_AddMoney failed!\n");
-        ui->lineEdit_AddMoney->setText("Get int from lineEdit_AddMoney failed!");
+        ui->lineEdit_AddMoney->setText("Invaild Content!");
         return; // 失败就直接返回
     }
 
@@ -78,9 +80,9 @@ void MainWindow::on_btn_AddMoney_clicked()
     // 3、调用类中充值的方法
     uchar code[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
     if(_RFIDfunction.addMoney(code, money) == true)
-        printf("RFIDfunction::addMoney OK!\n");
+        printf("RFIDfunction::addMoney OK! (Sending Add money ask succeeded!)\n");
     else
-        printf("RFIDfunction::addMoney failed!\n");
+        printf("RFIDfunction::addMoney failed! (Sending Add money ask failed!)\n");
 
     // 4、检查充值后的反馈
     if(_RFIDfunction.isAddMoney() == true)
@@ -104,7 +106,7 @@ void MainWindow::on_btn_CutMoney_clicked()
     else
     {
         printf("Get int from lineEdit_CutMoney failed!\n");
-        ui->lineEdit_CutMoney->setText("Get int from lineEdit_CutMoney failed!");
+        ui->lineEdit_CutMoney->setText("Invaild Content!");
         return; // 失败就直接返回
     }
 
@@ -115,9 +117,9 @@ void MainWindow::on_btn_CutMoney_clicked()
     // 3、调用类中扣款的方法
     uchar code[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
     if(_RFIDfunction.cutMoney(code, money) == true)
-        printf("RFIDfunction::lineEdit_AddMoney OK!\n");
+        printf("RFIDfunction::lineEdit_AddMoney OK! (Sending cut money ask succeeded!)\n");
     else
-        printf("RFIDfunction::lineEdit_AddMoney failed!\n");
+        printf("RFIDfunction::lineEdit_AddMoney failed! (Sending cut money ask failed!)\n");
 
     // 4、检查扣款后的反馈
     if(_RFIDfunction.isCutMoney() == true)
