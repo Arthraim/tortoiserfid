@@ -1,5 +1,11 @@
 #include "RFIDfunction.h"
 
+// 构造方法
+RFIDfunction::RFIDfunction()
+{
+    _SerialPort = new SerialPort();
+}
+
 // 检查是否初始化成功
 bool RFIDfunction::isInitPurse()
 {
@@ -227,7 +233,36 @@ void RFIDfunction::Send(uchar*msg)
     SendCheck_AA(msg);
     //串口通信的发送代码！！！
     //发送msg
+    int fd;
+    int nwrite;
+    int length=sizeof(msg);/*发送缓冲区数据宽度*/
+    char *dev ="/dev/ttyS0";
+    //char *dev ="/dev/s3c2410_serial0";/*arm的串口*/
+    fd = OpenDev(dev);
+    if (fd>0)
+        set_speed(fd,19200);
+    else
+    {
+        printf("Can't Open Serial Port!\n");
+        exit(0);
+    }
+    if (set_Parity(fd,8,1,'N')== FALSE)
+    {
+        printf("Set Parity Error\n");
+        exit(1);
+    }
+
+    nwrite=write(fd,msg,5);/*数据接收*/
+    if(nwrite==-1)
+    {
+        perror("write");/*读状态标志判断*/
+    }
+    printf("the number if char sent is %d\n",nwrite);
+
+    //close(fd);
+    //exit(0);
 }
+
 
 // 串口接受
 void RFIDfunction::Recieve(uchar*msg)
