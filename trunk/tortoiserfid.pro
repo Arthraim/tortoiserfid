@@ -5,7 +5,9 @@ TARGET = tortoiserfid
 TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
-    RFIDfunction.cpp
+    RFIDfunction.cpp \
+    SerialPort.cpp
 HEADERS += mainwindow.h \
-    RFIDfunction.h
+    RFIDfunction.h \
+    SerialPort.h
 FORMS += mainwindow.ui
