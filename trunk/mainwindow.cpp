@@ -18,7 +18,7 @@ void MainWindow::on_btn_Initialize_clicked()
     // 1、发送初始化钱包的请求
     uchar code[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
     uchar money[4] = {0x00,0x00,0x00,0x01}; // 初始化为1元
-    if(_RFIDfunction.initPurse(code, money))
+    if(_RFIDfunction.initPurse(code, money) == true)
         printf("RFIDfunction::initPurse OK! (Sending initialize purse ask succeeded!)\n");
     else
         printf("RFIDfunction::initPurse failed! (Sending initialize purse ask failed!)\n");

@@ -4,7 +4,7 @@
 bool RFIDfunction::isInitPurse()
 {
     uchar *buff;
-    Recieve(buff);
+    //Recieve(buff);
     if(buff[2] == 0x02 && buff[3] == 0xdc)
         return false;
     else if(buff[2] == 0x02 && buff[3] == 0x23)
@@ -18,7 +18,7 @@ int RFIDfunction::isGetMoney()
 {
     int _money; // 返回的钱数量
     uchar *buff;
-    Recieve(buff);
+    //Recieve(buff);
     uchar money[4];
     if(buff[2] == 0x02 && buff[3] == 0xdb)
         return -1; // －1表示失败
@@ -37,7 +37,7 @@ int RFIDfunction::isGetMoney()
 bool RFIDfunction::isAddMoney()
 {
     uchar *buff;
-    Recieve(buff);
+    //Recieve(buff);
     if(buff[2] == 0x02 && buff[3] == 0xda)
         return false;
     else if(buff[2] == 0x02 && buff[3] == 0x24)
@@ -50,7 +50,7 @@ bool RFIDfunction::isAddMoney()
 bool RFIDfunction::isCutMoney()
 {
     uchar *buff;
-    Recieve(buff);
+    //Recieve(buff);
     if(buff[2] == 0x02 && buff[3] == 0xd9)
         return false;
     else if(buff[2] == 0x02 && buff[3] == 0x26)
@@ -81,8 +81,9 @@ bool RFIDfunction::initPurse(uchar *code, uchar *money)
     msg[15] = money[3];
     msg[16] = 0x24;
     
-    Send(msg);
-    return true;
+    bool flag = false;
+    //flag = Send(msg);
+    return flag;
 }
 
 // 读取money
@@ -103,8 +104,9 @@ bool RFIDfunction::getMoney(uchar *code)
     msg[11] = code[5];
     msg[12] = 0x27;
     
-    Send(msg);
-    return true;
+    bool flag = false;
+    //flag = Send(msg);
+    return flag;
 }
 
 // 充钱
@@ -129,8 +131,9 @@ bool RFIDfunction::addMoney(uchar *code, uchar *money)
     msg[15] = money[3];
     msg[16] = 0x22;
     
-    Send(msg);
-    return true;
+    bool flag = false;
+    //flag = Send(msg);
+    return flag;
 }
 
 // 扣钱
@@ -155,8 +158,9 @@ bool RFIDfunction::cutMoney(uchar *code, uchar *money)
     msg[15] = money[3];
     msg[16] = 0x21;
     
-    Send(msg);
-    return true;
+    bool flag = false;
+    //flag = Send(msg);
+    return flag;
 }
 
 // 发送前加上AA
@@ -206,12 +210,12 @@ std::string RFIDfunction::hex2char( int len, char*income )
     {
         for (unsigned col = 0; col < max_cols; ++col)
         {
-        if (i < len)
-        {
-            buf << hexval[ ( (income[i] >> 4) & 0xF ) ]
-                << hexval[ ( income[i] & 0x0F ) ];
-            ++i;
-        }
+            if (i < len)
+            {
+                buf << hexval[ ( (income[i] >> 4) & 0xF ) ]
+                    << hexval[ ( income[i] & 0x0F ) ];
+                ++i;
+            }
         }
     }
     return buf.str();
