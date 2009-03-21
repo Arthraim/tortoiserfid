@@ -5,12 +5,17 @@
 #include <stdlib.h>
 #include <string>
 #include <sstream>
+#include "SerialPort.h"
+
 #define uchar unsigned char
 using namespace std;
 
 class RFIDfunction
 {
 public:
+
+    // 构造方法
+    RFIDfunction();
 
     // 检查是否初始化成功
     bool isInitPurse();
@@ -47,6 +52,9 @@ public:
     std::string  hex2char( int len, char*income );
 
 private:
+
+    // 串口通信类
+    SerialPort _SerialPort;
 
     // 串口发送
     void Send(uchar*msg);
