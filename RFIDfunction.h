@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include <string>
 #include <sstream>
-#include "SerialPort.h"
+//#include "SerialPort.h"
+#include "posix_qextserialport.h"
 
 #define uchar unsigned char
 using namespace std;
@@ -54,7 +55,8 @@ public:
 private:
 
     // 串口通信类
-    SerialPort _SerialPort;
+    //SerialPort _SerialPort;
+    Posix_QextSerialPort _SerialPort;
 
     // 串口发送
     bool Send(uchar*msg);
