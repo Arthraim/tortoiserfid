@@ -241,6 +241,7 @@ bool RFIDfunction::Send(uchar*msg)
     SendCheck_AA(msg);
     //串口通信的发送代码！！！
     //发送msg
+    /*
     if (_SerialPort.PortSend(msg) == 0)
     {
         printf("SerialProt::ProtSend OK!");
@@ -250,7 +251,18 @@ bool RFIDfunction::Send(uchar*msg)
     {
         printf("SerialProt::ProtSend failed!");
         return false;
+    }*/
+    if (_SerialPort.write((const char*)msg))
+    {
+        printf("SerialProt::ProtSend OK!");
+        return true;
     }
+    else
+    {
+        printf("SerialProt::ProtSend failed!");
+        return false;
+    }
+    return false;
 }
 
 
@@ -259,6 +271,7 @@ bool RFIDfunction::Recieve(uchar*msg)
 {        
     //串口通信的接受代码！！！
     //得到的记作msg
+    /*
     if (_SerialPort.PortReceive(msg) == 0)
     {
         printf("SerialProt::ProtSend OK!");
@@ -269,6 +282,17 @@ bool RFIDfunction::Recieve(uchar*msg)
         printf("SerialProt::ProtSend failed!");
         return false;
     }
-
+    */
+    if (_SerialPort.read((char*)msg,17))
+    {
+        printf("SerialProt::ProtSend OK!");
+        return true;
+    }
+    else
+    {
+        printf("SerialProt::ProtSend failed!");
+        return false;
+    }
     RecieveCheck_AA(msg);
+    return false;
 }
