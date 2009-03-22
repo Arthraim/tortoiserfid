@@ -3,14 +3,15 @@
 // 构造方法
 RFIDfunction::RFIDfunction()
 {
-    _SerialPort = new SerialPort();
+    //_SerialPort = new SerialPort();
 }
 
 // 检查是否初始化成功
 bool RFIDfunction::isInitPurse()
 {
     uchar *buff;
-    //Recieve(buff);
+    if(Recieve(buff) == false)
+        return false;
     if(buff[2] == 0x02 && buff[3] == 0xdc)
         return false;
     else if(buff[2] == 0x02 && buff[3] == 0x23)
@@ -24,7 +25,8 @@ int RFIDfunction::isGetMoney()
 {
     int _money; // 返回的钱数量
     uchar *buff;
-    //Recieve(buff);
+    if(Recieve(buff) == false)
+        return false;
     uchar money[4];
     if(buff[2] == 0x02 && buff[3] == 0xdb)
         return -1; // －1表示失败
@@ -43,7 +45,8 @@ int RFIDfunction::isGetMoney()
 bool RFIDfunction::isAddMoney()
 {
     uchar *buff;
-    //Recieve(buff);
+    if(Recieve(buff) == false)
+        return false;
     if(buff[2] == 0x02 && buff[3] == 0xda)
         return false;
     else if(buff[2] == 0x02 && buff[3] == 0x24)
@@ -56,7 +59,8 @@ bool RFIDfunction::isAddMoney()
 bool RFIDfunction::isCutMoney()
 {
     uchar *buff;
-    //Recieve(buff);
+    if(Recieve(buff) == false)
+        return false;
     if(buff[2] == 0x02 && buff[3] == 0xd9)
         return false;
     else if(buff[2] == 0x02 && buff[3] == 0x26)
@@ -88,7 +92,7 @@ bool RFIDfunction::initPurse(uchar *code, uchar *money)
     msg[16] = 0x24;
     
     bool flag = false;
-    //flag = Send(msg);
+    flag = Send(msg);
     return flag;
 }
 
@@ -111,7 +115,7 @@ bool RFIDfunction::getMoney(uchar *code)
     msg[12] = 0x27;
     
     bool flag = false;
-    //flag = Send(msg);
+    flag = Send(msg);
     return flag;
 }
 
@@ -138,7 +142,7 @@ bool RFIDfunction::addMoney(uchar *code, uchar *money)
     msg[16] = 0x22;
     
     bool flag = false;
-    //flag = Send(msg);
+    flag = Send(msg);
     return flag;
 }
 
@@ -165,7 +169,7 @@ bool RFIDfunction::cutMoney(uchar *code, uchar *money)
     msg[16] = 0x21;
     
     bool flag = false;
-    //flag = Send(msg);
+    flag = Send(msg);
     return flag;
 }
 
@@ -228,46 +232,39 @@ std::string RFIDfunction::hex2char( int len, char*income )
 }
 
 // 串口发送
-void RFIDfunction::Send(uchar*msg)
+bool RFIDfunction::Send(uchar*msg)
 {
     SendCheck_AA(msg);
     //串口通信的发送代码！！！
     //发送msg
-    int fd;
-    int nwrite;
-    int length=sizeof(msg);/*发送缓冲区数据宽度*/
-    char *dev ="/dev/ttyS0";
-    //char *dev ="/dev/s3c2410_serial0";/*arm的串口*/
-    fd = OpenDev(dev);
-    if (fd>0)
-        set_speed(fd,19200);
+    if (_SerialPort.PortSend(msg) == 0)
+    {
+        printf("SerialProt::ProtSend OK!");
+        return true;
+    }
     else
     {
-        printf("Can't Open Serial Port!\n");
-        exit(0);
+        printf("SerialProt::ProtSend failed!");
+        return false;
     }
-    if (set_Parity(fd,8,1,'N')== FALSE)
-    {
-        printf("Set Parity Error\n");
-        exit(1);
-    }
-
-    nwrite=write(fd,msg,5);/*数据接收*/
-    if(nwrite==-1)
-    {
-        perror("write");/*读状态标志判断*/
-    }
-    printf("the number if char sent is %d\n",nwrite);
-
-    //close(fd);
-    //exit(0);
 }
 
 
 // 串口接受
-void RFIDfunction::Recieve(uchar*msg)
+bool RFIDfunction::Recieve(uchar*msg)
 {        
     //串口通信的接受代码！！！
     //得到的记作msg
+    if (_SerialPort.PortReceive(msg) == 0)
+    {
+        printf("SerialProt::ProtSend OK!");
+        return true;
+    }
+    else
+    {
+        printf("SerialProt::ProtSend failed!");
+        return false;
+    }
+
     RecieveCheck_AA(msg);
 }
