@@ -2,16 +2,16 @@
 
 SerialPort::SerialPort()
 {
-    int speed_arr[] = {38400,  19200,  9600,  4800,  2400,  1200,  300,
-                    38400,  19200,  9600, 4800, 2400, 1200,  300, };
+    int speed_arr[] = { B38400, B19200, B9600, B4800, B2400, B1200, B300,
+                B38400, B19200, B9600, B4800, B2400, B1200, B300, };
     int name_arr[] = {38400,  19200,  9600,  4800,  2400,  1200,  300,
-                    38400,  19200,  9600, 4800, 2400, 1200,  300, };
+                38400,  19200,  9600, 4800, 2400, 1200,  300, };
 }
 
 /**
-*@brief  ÉèÖÃ´®¿ÚÍ¨ÐÅËÙÂÊ
-*@param  fd     ÀàÐÍ int  ´ò¿ª´®¿ÚµÄÎÄ¼þ¾ä±ú
-*@param  speed  ÀàÐÍ int  ´®¿ÚËÙ¶È
+*@brief  è®¾ç½®ä¸²å£é€šä¿¡é€ŸçŽ‡
+*@param  fd     ç±»åž‹ int  æ‰“å¼€ä¸²å£çš„æ–‡ä»¶å¥æŸ„
+*@param  speed  ç±»åž‹ int  ä¸²å£é€Ÿåº¦
 *@return void*/
 void SerialPort::set_speed(int fd, int speed)
 {
@@ -36,11 +36,11 @@ void SerialPort::set_speed(int fd, int speed)
 }
 
 /**
-*@brief   ÉèÖÃ´®¿ÚÊý¾ÝÎ»£¬Í£Ö¹Î»ºÍÐ§ÑéÎ»
-*@param  fd       ÀàÐÍ  int  ´ò¿ªµÄ´®¿ÚÎÄ¼þ¾ä±ú*
-*@param  databits ÀàÐÍ  int  Êý¾ÝÎ»   È¡ÖµÎª 7 »òÕß8*
-*@param  stopbits ÀàÐÍ  int  Í£Ö¹Î»   È¡ÖµÎª 1 »òÕß2*
-*@param  parity   ÀàÐÍ  int  Ð§ÑéÀàÐÍ È¡ÖµÎª N,E,O,,S
+*@brief   è®¾ç½®ä¸²å£æ•°æ®ä½ï¼Œåœæ­¢ä½å’Œæ•ˆéªŒä½
+*@param  fd       ç±»åž‹  int  æ‰“å¼€çš„ä¸²å£æ–‡ä»¶å¥æŸ„*
+*@param  databits ç±»åž‹  int  æ•°æ®ä½   å–å€¼ä¸º 7 æˆ–è€…8*
+*@param  stopbits ç±»åž‹  int  åœæ­¢ä½   å–å€¼ä¸º 1 æˆ–è€…2*
+*@param  parity   ç±»åž‹  int  æ•ˆéªŒç±»åž‹ å–å€¼ä¸º N,E,O,,S
 */
 int SerialPort::set_Parity(int fd,int databits,int stopbits,int parity)
 {
@@ -51,7 +51,7 @@ int SerialPort::set_Parity(int fd,int databits,int stopbits,int parity)
         return(FALSE);
     }
     options.c_cflag &= ~CSIZE;
-    switch (databits) // ÉèÖÃÊý¾ÝÎ»Êý
+    switch (databits) // è®¾ç½®æ•°æ®ä½æ•°
     {
     case 7: options.c_cflag |= CS7; break;
     case 8: options.c_cflag |= CS8; break;
@@ -67,13 +67,13 @@ int SerialPort::set_Parity(int fd,int databits,int stopbits,int parity)
         break;
     case 'o':
     case 'O':
-        options.c_cflag |= (PARODD | PARENB);  // ÉèÖÃÎªÆæÐ§Ñé
+        options.c_cflag |= (PARODD | PARENB);  // è®¾ç½®ä¸ºå¥‡æ•ˆéªŒ
         options.c_iflag |= INPCK;             // Disnable parity checking
         break;
     case 'e':
     case 'E':
         options.c_cflag |= PARENB;     // Enable parity
-        options.c_cflag &= ~PARODD;   // ×ª»»ÎªÅ¼Ð§Ñé
+        options.c_cflag &= ~PARODD;   // è½¬æ¢ä¸ºå¶æ•ˆéªŒ
         options.c_iflag |= INPCK;       // Disnable parity checking
         break;
     case 'S':
@@ -85,7 +85,7 @@ int SerialPort::set_Parity(int fd,int databits,int stopbits,int parity)
         fprintf(stderr,"Unsupported parity\n");
         return (FALSE);
     }
-    // ÉèÖÃÍ£Ö¹Î»
+    // è®¾ç½®åœæ­¢ä½
     switch (stopbits)
     {
     case 1:
@@ -114,16 +114,100 @@ int SerialPort::set_Parity(int fd,int databits,int stopbits,int parity)
  }
 
 /**
-*@breif ´ò¿ª´®¿Ú
+*@breif æ‰“å¼€ä¸²å£
 */
 int SerialPort::OpenDev(char *Dev)
 {
     int fd = open( Dev, O_RDWR );   // | O_NOCTTY | O_NDELAY
     if (-1 == fd)
-    {   //ÉèÖÃÊý¾ÝÎ»Êý
+    {   //è®¾ç½®æ•°æ®ä½æ•°
         perror("Can't Open Serial Port");
         return -1;
     }
     else
         return fd;
 }
+
+/**
+*@bref å‘é€æ•°æ®
+*/
+int SerialPort::PortSend(uchar *sbuf)
+{
+    int fd;
+    int nwrite;
+    /*
+    char sbuf[5]; //å¾…å‘é€çš„å†…å®¹
+    sbuf[0] = 0xAA;
+    sbuf[1] = 0xBB;
+    sbuf[2] = 0x02;
+    sbuf[3] = 0x19;
+    sbuf[4] = 0x1b;
+    */
+    int length=sizeof(sbuf); //å‘é€ç¼“å†²åŒºæ•°æ®å®½åº¦
+    char *dev ="/dev/ttyS0";
+    //char *dev ="/dev/s3c2410_serial0";/*armçš„ä¸²å£*/
+    fd = OpenDev(dev);
+    if (fd>0)
+        set_speed(fd,19200);
+    else
+    {
+        printf("Can't Open Serial Port!\n");
+        return FALSE;
+    }
+    if (set_Parity(fd,8,1,'N')== FALSE)
+    {
+        printf("Set Parity Error\n");
+        return FALSE;
+    }
+
+    nwrite=write(fd,sbuf,5);
+    if(nwrite==-1)
+    {
+        perror("write");
+    }
+    printf("the number if char sent is %d\n",nwrite);
+
+    close(fd);
+    //exit(0);
+}
+
+/**
+*@bref æŽ¥å—æ•°æ®
+*/
+int SerialPort::PortReceive(uchar *rbuf)
+{
+    int fd;
+    int nread;
+    rbuf = new unsigned char[512];
+    char *dev ="/dev/ttyS0";
+    //char *dev ="/dev/s3c2410_serial0";/*armçš„ä¸²å£*/
+    fd = OpenDev(dev);
+    if (fd>0)
+        set_speed(fd,19200);
+    else
+    {
+        printf("Can't Open Serial Port!\n");
+        return FALSE;
+    }
+    if (set_Parity(fd,8,1,'N')== FALSE)
+    {
+        printf("Set Parity Error\n");
+        return FALSE;
+    }
+    while(1)
+    {
+        int nread=read(fd,rbuf,1);
+        if(nread!=-1)
+        {
+            printf("%x\n",*rbuf);
+        }
+        else
+        {
+            printf("can not read data! ");
+        }
+    }
+    close(fd);
+    return TRUE;
+}
+
+

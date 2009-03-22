@@ -43,7 +43,7 @@ public:
 
     // 发送前加上AA
     // 此方法需要去掉第一组AABB的处理！！！！
-    void  SendCheck_AA(unsigned char *SendBuf);
+    void SendCheck_AA(unsigned char *SendBuf);
 
     // 删除AA后面的00
     void RecieveCheck_AA(unsigned char *RecieveBuf);
@@ -57,10 +57,10 @@ private:
     SerialPort _SerialPort;
 
     // 串口发送
-    void Send(uchar*msg);
+    bool Send(uchar*msg);
 
     // 串口接受
-    void Recieve(uchar*msg);
+    bool Recieve(uchar*msg);
 
 };
 

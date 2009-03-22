@@ -1,14 +1,14 @@
 #ifndef SERIALPORT_H
 #define SERIALPORT_H
 
-#include     <stdio.h>      /*±ê×¼ÊäÈëÊä³ö¶¨Òå*/
-#include     <stdlib.h>     /*±ê×¼º¯Êı¿â¶¨Òå*/
-#include     <unistd.h>     /*Unix±ê×¼º¯Êı¶¨Òå*/
+#include     <stdio.h>      /*æ ‡å‡†è¾“å…¥è¾“å‡ºå®šä¹‰*/
+#include     <stdlib.h>     /*æ ‡å‡†å‡½æ•°åº“å®šä¹‰*/
+#include     <unistd.h>     /*Unixæ ‡å‡†å‡½æ•°å®šä¹‰*/
 #include     <sys/types.h>  /**/
 #include     <sys/stat.h>   /**/
-#include     <fcntl.h>      /*ÎÄ¼ş¿ØÖÆ¶¨Òå*/
-#include     <termios.h>    /*PPSIXÖÕ¶Ë¿ØÖÆ¶¨Òå*/
-#include     <errno.h>      /*´íÎóºÅ¶¨Òå*/
+#include     <fcntl.h>      /*æ–‡ä»¶æ§åˆ¶å®šä¹‰*/
+#include     <termios.h>    /*PPSIXç»ˆç«¯æ§åˆ¶å®šä¹‰*/
+#include     <errno.h>      /*é”™è¯¯å·å®šä¹‰*/
 
 #define FALSE  -1
 #define TRUE   0
@@ -22,17 +22,23 @@ private:
     int name_arr[];
 
 public:
-    // ¹¹Ôì·½·¨
+    // æ„é€ æ–¹æ³•
     SerialPort();
 
-    // ÉèÖÃ´®¿ÚÍ¨ĞÅËÙÂÊ
+    // è®¾ç½®ä¸²å£é€šä¿¡é€Ÿç‡
     void set_speed(int fd, int speed);
 
-    // ÉèÖÃ´®¿ÚÊı¾İÎ»£¬Í£Ö¹Î»ºÍĞ§ÑéÎ»
+    // è®¾ç½®ä¸²å£æ•°æ®ä½ï¼Œåœæ­¢ä½å’Œæ•ˆéªŒä½
     int set_Parity(int fd,int databits,int stopbits,int parity);
 
-    // ´ò¿ª´®¿Ú
+    // æ‰“å¼€ä¸²å£
     int OpenDev(char *Dev);
+
+    // å‘é€æ•°æ®
+    int PortSend(uchar *sbuf);
+
+    // æ¥å—æ•°æ®
+    int PortReceive(uchar *rbuf);
 };
 
 #endif // SERIALPORT_H
