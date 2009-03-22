@@ -37,7 +37,7 @@ void SerialPort::set_speed(int fd, int speed)
 
 /**
 *@brief   设置串口数据位，停止位和效验位
-*@param  fd       类型  int  打开的串口文件句柄*
+*@param  fd      类型  int  打开的串口文件句柄*
 *@param  databits 类型  int  数据位   取值为 7 或者8*
 *@param  stopbits 类型  int  停止位   取值为 1 或者2*
 *@param  parity   类型  int  效验类型 取值为 N,E,O,,S
@@ -167,8 +167,8 @@ int SerialPort::PortSend(uchar *sbuf)
     }
     printf("the number if char sent is %d\n",nwrite);
 
-    close(fd);
-    //exit(0);
+    //close(fd);
+    return TRUE;
 }
 
 /**
@@ -206,7 +206,7 @@ int SerialPort::PortReceive(uchar *rbuf)
             printf("can not read data! ");
         }
     }
-    close(fd);
+    //close(fd);
     return TRUE;
 }
 
