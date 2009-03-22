@@ -176,31 +176,35 @@ bool RFIDfunction::cutMoney(uchar *code, uchar *money)
 // 发送前加上AA
 void RFIDfunction::SendCheck_AA(unsigned char *SendBuf)
  {
-	 unsigned char i;
-	 unsigned char  buffer[1000];
-         for(i=1;i<SendBuf[0];i++) // i=0则为包括AABB的AA
-	 {
-                 if(SendBuf[i]==0xAA)
-		 {
-			 memcpy(buffer,&SendBuf[i+1],SendBuf[0]-i);
-                         SendBuf[i+1]=0x00;
-			 memcpy(&SendBuf[i+2],buffer,SendBuf[0]-i);
-		 }
-	 }
-	 printf("SendCheck_AA is  OK\n");
+    unsigned char i;
+    unsigned char  buffer[1000];
+    //for(i=1;i<SendBuf[0];i++) // i=0则为包括AABB的AA
+    int length = sizeof(SendBuf);
+    for(i=1; i < length; i++)
+    {
+        if(SendBuf[i]==0xAA)
+        {
+            memcpy(buffer,&SendBuf[i+1],SendBuf[0]-i);
+            SendBuf[i+1]=0x00;
+            memcpy(&SendBuf[i+2],buffer,SendBuf[0]-i);
+        }
+    }
+    printf("SendCheck_AA is  OK\n");
  }
 
 // 删除AA后面的00
-void RFIDfunction::RecieveCheck_AA(unsigned char *RecieveBuf)
+void RFIDfunction::RecieveCheck_AA(unsigned char *ReceiveBuf)
 {
     unsigned char i;
     unsigned char  buffer[1000];
-    for(i=1;i<RecieveBuf[0];i++)
+    //for(i=1;i<RecieveBuf[0];i++)
+    int length = sizeof(ReceiveBuf);
+    for(i=1; i < length; i++)
     {
-        if(RecieveBuf[i]==0x00 && RecieveBuf[i-1]==0xAA)            //changed  for  test
+        if(ReceiveBuf[i]==0x00 && ReceiveBuf[i-1]==0xAA)            //changed  for  test
         {
-            memcpy(buffer,&RecieveBuf[i+1],RecieveBuf[0]-i);
-            memcpy(&RecieveBuf[i],buffer,RecieveBuf[0]-i);
+            memcpy(buffer,&ReceiveBuf[i+1],ReceiveBuf[0]-i);
+            memcpy(&ReceiveBuf[i],buffer,ReceiveBuf[0]-i);
         }
     }
     printf("RecieveCheck_AA is  OK\n");
