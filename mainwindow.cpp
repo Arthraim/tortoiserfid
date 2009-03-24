@@ -129,3 +129,19 @@ void MainWindow::on_btn_CutMoney_clicked()
 
     printf("\n");
 }
+
+void MainWindow::on_btn_GetType_clicked()
+{
+    // 1、发送查询卡片类型的请求
+    if(_RFIDfunction.getType() == true)
+        printf("RFIDfunction::getType OK! (Sending getType ask succeeded!)\n");
+    else
+        printf("RFIDfunction::getType failed! (Sending getType ask failed!)\n");
+
+    // 2、检查是否查询卡片类型成功
+    if(_RFIDfunction.isGetType() == true)
+        printf("RFIDfunction::isGetType OK! (Get type succeeded!)\n");
+    else
+        printf("RFIDfunction::isGetType failed! (Get type failed!)\n");
+    printf("\n");
+}

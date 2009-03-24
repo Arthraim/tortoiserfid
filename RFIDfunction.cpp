@@ -6,6 +6,24 @@ RFIDfunction::RFIDfunction()
     //_SerialPort = new SerialPort();
 }
 
+// 检查是否得到卡片类型
+bool RFIDfunction::isGetType()
+{
+    uchar *buff;
+    if(Recieve(buff) == false)
+        return false;
+    if(buff[2] == 0x02 && buff[3] == 0xe6)
+        return false;
+    else if(buff[2] == 0x04 && buff[3] == 0x19)
+    {
+        std::string ret = hex2char(7, (char*)buff);
+        cout<<ret<<endl;
+        return true;
+    }
+    else
+        return false;
+}
+
 // 检查是否初始化成功
 bool RFIDfunction::isInitPurse()
 {
@@ -68,6 +86,23 @@ bool RFIDfunction::isCutMoney()
     else
         return false;
 }
+
+// 查询卡片类型
+bool RFIDfunction::getType()
+{
+    uchar *msg = new uchar[6];
+    msg[0] = 0xaa;
+    msg[1] = 0xbb;
+    msg[2] = 0x02;
+    msg[3] = 0x19;
+    msg[4] = 0x1b;
+    msg[5] = '\0';
+
+    bool flag = false;
+    flag = Send(msg);
+    return flag;
+}
+
 
 // 初始化钱包
 bool RFIDfunction::initPurse(uchar *code, uchar *money)
@@ -179,7 +214,7 @@ void RFIDfunction::SendCheck_AA(unsigned char *SendBuf)
     unsigned char i;
     unsigned char  buffer[1000];
     //for(i=1;i<SendBuf[0];i++) // i=0则为包括AABB的AA
-    int length = sizeof(SendBuf);
+    int length = strlen((char*)SendBuf);
     for(i=1; i < length; i++)
     {
         if(SendBuf[i]==0xAA)

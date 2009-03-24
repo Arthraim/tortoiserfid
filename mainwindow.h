@@ -23,6 +23,7 @@ private:
     RFIDfunction _RFIDfunction;
 
 private slots:
+    void on_btn_GetType_clicked();
     void on_btn_CutMoney_clicked();
     void on_btn_AddMoney_clicked();
     void on_btn_GetMoney_clicked();

@@ -6,12 +6,10 @@ TEMPLATE = app
 SOURCES += main.cpp \
     mainwindow.cpp \
     RFIDfunction.cpp \
-    SerialPort.cpp \
     qextserialbase.cpp \
     posix_qextserialport.cpp
 HEADERS += mainwindow.h \
     RFIDfunction.h \
-    SerialPort.h \
     qextserialbase.h \
     posix_qextserialport.h
 FORMS += mainwindow.ui
