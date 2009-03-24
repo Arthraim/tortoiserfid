@@ -18,6 +18,9 @@ public:
     // 构造方法
     RFIDfunction();
 
+    // 检查是否得到卡片类型
+    bool isGetType();
+
     // 检查是否初始化成功
     bool isInitPurse();
 
@@ -32,6 +35,9 @@ public:
 
     // 初始化钱包
     bool initPurse(uchar *code, uchar *money);
+
+    // 查询卡片类型
+    bool getType();
 
     // 读取money
     bool getMoney(uchar *code);
