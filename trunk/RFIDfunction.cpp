@@ -4,6 +4,7 @@
 RFIDfunction::RFIDfunction()
 {
     //_SerialPort = new SerialPort();
+    _SerialPort = new Posix_QextSerialPort(QString("/dev/ttyS0"));
 }
 
 // 检查是否得到卡片类型
@@ -30,7 +31,7 @@ bool RFIDfunction::isInitPurse()
     uchar *buff;
     if(Recieve(buff) == false)
         return false;
-    if(buff[2] == 0x02 && buff[3] == 0xdc)
+    else if(buff[2] == 0x02 && buff[3] == 0xdc)
         return false;
     else if(buff[2] == 0x02 && buff[3] == 0x23)
         return true;
@@ -270,6 +271,31 @@ std::string RFIDfunction::hex2char( int len, char*income )
     return buf.str();
 }
 
+// 串口设置
+bool RFIDfunction::setSerialPort()
+{
+    if(_SerialPort->open(0) == true)
+    {
+        printf("setSerialPort ==> _SerialPort.open OK!");
+    }
+    else
+    {
+        printf("setSerialPort ==> _SerialPort.open failed!");
+        return false;
+    }
+    _SerialPort->setBaudRate(BAUD19200);
+        printf("setSerialPort ==> _SerialPort.setBaudRate OK! (set defaultly as BAUD19200)");
+    _SerialPort->setDataBits(DATA_8);
+        printf("setSerialPort ==> _SerialPort.setDataBits OK! (set defaultly as DATA_8)");
+    _SerialPort->setStopBits(STOP_1);
+        printf("setSerialPort ==> _SerialPort.setStopBits OK! (set defaultly as STOP_1)");
+    _SerialPort->setParity(PAR_NONE);
+        printf("setSerialPort ==> _SerialPort.setParity OK! (set defaultly as PAR_NONE)");
+    _SerialPort->setTimeout(0, 500);
+        printf("setSerialPort ==> _SerialPort.setTimeout OK! (set defaultly as 500ms)");
+    return true;
+}
+
 // 串口发送
 bool RFIDfunction::Send(uchar*msg)
 {
@@ -287,7 +313,8 @@ bool RFIDfunction::Send(uchar*msg)
         printf("SerialProt::ProtSend failed!");
         return false;
     }*/
-    if (_SerialPort.write((const char*)msg))
+    setSerialPort();
+    if (_SerialPort->write((const char*)msg))
     {
         printf("SerialProt::ProtSend OK!");
         return true;
@@ -318,16 +345,20 @@ bool RFIDfunction::Recieve(uchar*msg)
         return false;
     }
     */
-    if (_SerialPort.read((char*)msg,17))
+    setSerialPort();
+    if (_SerialPort->read((char*)msg,7))
     {
         printf("SerialProt::ProtSend OK!");
+        RecieveCheck_AA(msg);
         return true;
     }
     else
     {
         printf("SerialProt::ProtSend failed!");
+        RecieveCheck_AA(msg);
         return false;
     }
-    RecieveCheck_AA(msg);
     return false;
+    _SerialPort->read((char*)msg,7);
+    return true;
 }
