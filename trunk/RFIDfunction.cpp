@@ -287,10 +287,12 @@ bool RFIDfunction::setSerialPort()
         printf("setSerialPort ==> _SerialPort.setBaudRate OK! (set defaultly as BAUD19200)");
     _SerialPort->setDataBits(DATA_8);
         printf("setSerialPort ==> _SerialPort.setDataBits OK! (set defaultly as DATA_8)");
-    _SerialPort->setStopBits(STOP_1);
-        printf("setSerialPort ==> _SerialPort.setStopBits OK! (set defaultly as STOP_1)");
     _SerialPort->setParity(PAR_NONE);
         printf("setSerialPort ==> _SerialPort.setParity OK! (set defaultly as PAR_NONE)");
+    _SerialPort->setStopBits(STOP_1);
+        printf("setSerialPort ==> _SerialPort.setStopBits OK! (set defaultly as STOP_1)");
+    _SerialPort->setFlowControl(FLOW_OFF);
+        printf("setSerialPort ==> _SerialPort.setFlowControl OK! (set defaultly as FLOW_OFF)");
     _SerialPort->setTimeout(0, 500);
         printf("setSerialPort ==> _SerialPort.setTimeout OK! (set defaultly as 500ms)");
     return true;
@@ -314,7 +316,7 @@ bool RFIDfunction::Send(uchar*msg)
         return false;
     }*/
     setSerialPort();
-    if (_SerialPort->write((const char*)msg))
+    if (_SerialPort->write((const char*)msg, 5))
     {
         printf("SerialProt::ProtSend OK!");
         return true;
