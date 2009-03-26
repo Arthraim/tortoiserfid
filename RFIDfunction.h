@@ -49,7 +49,6 @@ public:
     bool cutMoney(uchar *code, uchar *money);
 
     // 发送前加上AA
-    // 此方法需要去掉第一组AABB的处理！！！！
     void SendCheck_AA(unsigned char *SendBuf);
 
     // 删除AA后面的00
@@ -60,9 +59,13 @@ public:
 
 private:
 
+
     // 串口通信类
     //SerialPort _SerialPort;
-    Posix_QextSerialPort _SerialPort;
+    Posix_QextSerialPort *_SerialPort;
+
+    // 串口设置
+    bool setSerialPort();
 
     // 串口发送
     bool Send(uchar*msg);
