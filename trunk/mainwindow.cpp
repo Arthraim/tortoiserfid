@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     connect(ui->btn_Exit, SIGNAL(clicked()), qApp,  SLOT(quit()));
+
+    _inputNum = 0;
 }
 
 MainWindow::~MainWindow()
@@ -60,16 +62,16 @@ void MainWindow::on_btn_AddMoney_clicked()
 {
     // 1、从lineEdit_AddMoney中读出数字
     bool ok;
-    int intMoney = ui->lineEdit_AddMoney->text().toInt(&ok, 10); // 转换为int
+    int intMoney = ui->lineEdit_Money->text().toInt(&ok, 10); // 转换为int
     if(ok == true) // 如果转换成功
     {
-        printf("Get int from lineEdit_AddMoney OK!\n");
+        printf("Get int from lineEdit_Money OK!\n");
         printf("The money is [%d].\n", intMoney);
     }
     else
     {
-        printf("Get int from lineEdit_AddMoney failed!\n");
-        ui->lineEdit_AddMoney->setText("Invaild Content!");
+        printf("Get int from lineEdit_Money failed!\n");
+        ui->lineEdit_Money->setText("Invaild Content!");
         return; // 失败就直接返回
     }
 
@@ -97,16 +99,16 @@ void MainWindow::on_btn_CutMoney_clicked()
 {
     // 1、从lineEdit_CutMoney中读出数字
     bool ok;
-    int intMoney = ui->lineEdit_CutMoney->text().toInt(&ok, 10); // 转换为int
+    int intMoney = ui->lineEdit_Money->text().toInt(&ok, 10); // 转换为int
     if(ok == true) // 如果转换成功
     {
-        printf("Get int from lineEdit_CutMoney OK!\n");
+        printf("Get int from lineEdit_Money OK!\n");
         printf("The money is [%d].\n", intMoney);
     }
     else
     {
-        printf("Get int from lineEdit_CutMoney failed!\n");
-        ui->lineEdit_CutMoney->setText("Invaild Content!");
+        printf("Get int from lineEdit_Money failed!\n");
+        ui->lineEdit_Money->setText("Invaild Content!");
         return; // 失败就直接返回
     }
 
@@ -144,4 +146,87 @@ void MainWindow::on_btn_GetType_clicked()
     else
         printf("RFIDfunction::isGetType failed! (Get type failed!)\n");
     printf("\n");
+}
+
+///////////////////////////////////////////////////////////////////////
+// 以下为数字输入部分
+
+void MainWindow::ShowNumber()
+{
+    if(_inputNum == 0)
+        ui->lineEdit_Money->setText("");
+    else
+        ui->lineEdit_Money->setText(QString().setNum(_inputNum));
+}
+
+void MainWindow::on_btn_1_clicked()
+{
+    _inputNum = _inputNum * 10 + 1;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_2_clicked()
+{
+    _inputNum = _inputNum * 10 + 2;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_3_clicked()
+{
+    _inputNum = _inputNum * 10 + 3;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_4_clicked()
+{
+    _inputNum = _inputNum * 10 + 4;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_5_clicked()
+{
+    _inputNum = _inputNum * 10 + 5;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_6_clicked()
+{
+    _inputNum = _inputNum * 10 + 6;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_7_clicked()
+{
+    _inputNum = _inputNum * 10 + 7;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_8_clicked()
+{
+    _inputNum = _inputNum * 10 + 8;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_9_clicked()
+{
+    _inputNum = _inputNum * 10 + 9;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_0_clicked()
+{
+    _inputNum = _inputNum * 10;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_CE_clicked()
+{
+    _inputNum = 0;
+    ShowNumber();
+}
+
+void MainWindow::on_btn_C_clicked()
+{
+    _inputNum = _inputNum / 10;
+    ShowNumber();
 }
